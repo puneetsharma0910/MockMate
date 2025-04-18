@@ -8,13 +8,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-// interface FormFieldProps<T extends FieldValues> {
-//   control: Control<T>;
-//   name: Path<T>;
-//   label: string;
-//   placeholder?: string;
-//   type?: "text" | "email" | "password";
-// }
+interface FormFieldProps<T extends FieldValues> {
+  control: Control<T>;
+  name: Path<T>;
+  label: string;
+  placeholder?: string;
+  type?: "text" | "email" | "password";
+}
 
 const FormField = <T extends FieldValues>({
   control,
