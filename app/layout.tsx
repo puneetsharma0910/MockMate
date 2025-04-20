@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
-import { Mona_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import "../app/globals.css";
 import { Toaster } from "sonner";
 
-const monaSans = Mona_Sans({
-  variable: "--font-mona-sans",
+const inter = Inter({
   subsets: ["latin"],
+  variable: "--font-inter",
 });
-
 
 export const metadata: Metadata = {
   title: "MockMate",
@@ -22,15 +21,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${monaSans.className} antialiased pattern`}
+        className={`${inter.className} antialiased pattern`}
       >
         {children}
-        <Toaster/>
+        <Toaster position="top-right" richColors />
       </body>
     </html>
   );
-}
-function Mono(arg0: { variable: string; subsets: string[]; }) {
-  throw new Error("Function not implemented.");
 }
 

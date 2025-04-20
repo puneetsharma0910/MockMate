@@ -11,7 +11,7 @@ const page = () => {
       <section className="card-cta">
         <div className="flex flex-col gap-6 max-w-lg">
           <h2>
-            Get Interview Ready with Mockmate ans Ace Your Next Interview with
+            Get Interview Ready with Mockmate and Ace Your Next Interview with
             Ai powered Mock Interviews
           </h2>
           <p className="text-lg">
@@ -31,23 +31,20 @@ const page = () => {
         />
       </section>
 
-      <section className="flex flex-col gap-6 max-w-lg">
+      <section className="grid grid-cols-4 gap-6 max-w-7xl">
         <h2>Your Interviews</h2>
-        <div className="interviews-section">
+        <div className="col-span-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {dummyInterviews.map((interview) => {
             return <InterviewCard {...interview} key={interview.id} />;
           })}
         </div>
       </section>
-      <section className="flex flex-col gap-6 max-w-lg">
+      <section className="flex flex-col gap-6 max-w-7xl">
         <h2>Take a Interview</h2>
-        <div className="interviews-section">
-          <div className="interviews-section">
-            {dummyInterviews.map((interview) => {
-              return <InterviewCard {...interview} key={interview.id} />;
-            })}
-          </div>
-          {/* <p>Currently there are no interviews available</p> */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {dummyInterviews.map((interview) => {
+            return <InterviewCard {...interview} key={interview.id} />;
+          })}
         </div>
       </section>
     </>

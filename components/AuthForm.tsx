@@ -85,7 +85,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
     const isSignIn = type === 'sign-in';
 
     return (
-        <div className="card-border lg:min-w-[566px]">
+        <div className="card-border lg:min-w-[566px] hover:shadow-xl transition-all duration-300">
             <div className="flex flex-col gap-6 card py-14 px-10">
                 <div className="flex flex-row gap-2 justify-center">
                     <Image
@@ -94,10 +94,10 @@ const AuthForm = ({ type }: { type: FormType }) => {
                         height={32}
                         width={38}
                     />
-                    <h2 className="text-primary-100">PrepWise</h2>
+                    <h2 className="text-primary-100 font-bold">PrepWise</h2>
                 </div>
 
-                <h3>Practice job interview with AI</h3>
+                <h3 className="text-center text-white">Practice job interview with AI</h3>
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6 mt-4 form">
@@ -129,9 +129,9 @@ const AuthForm = ({ type }: { type: FormType }) => {
                     </form>
                 </Form>
                 
-                <p className="text-center">
+                <p className="text-center text-light-400">
                     {isSignIn ? 'No account yet?' : 'Have an account already?'}
-                    <Link href={!isSignIn ? '/sign-in' : '/sign-up'} className="font-bold text-user-primary ml-1">
+                    <Link href={!isSignIn ? '/sign-in' : '/sign-up'} className="font-bold text-primary-100 ml-1 hover:text-primary-200 transition-colors">
                         {!isSignIn ? "Sign in" : 'Sign up'}
                     </Link>
                 </p>
