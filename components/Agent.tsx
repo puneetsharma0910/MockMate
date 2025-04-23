@@ -5,7 +5,8 @@ import {cn} from "@/lib/utils";
 import {useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
 import { vapi } from '@/lib/vapi.sdk';
-import { toast } from "sonner";
+import {interviewer} from "@/constants";
+import {createFeedback} from "@/lib/actions/general.action";
 
 enum CallStatus {
     INACTIVE = 'INACTIVE',
@@ -19,7 +20,7 @@ interface SavedMessage {
     content: string;
 }
 
-const Agent = ({ userName, userId, type }: AgentProps) => {
+const Agent = ({ userName, userId, type, interviewId, questions }: AgentProps) => {
     const router = useRouter();
     const [isSpeaking, setIsSpeaking] = useState(false);
     const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
@@ -59,36 +60,57 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
         }
     }, [])
 
+    const handleGenerateFeedback = async (messages: SavedMessage[]) => {
+        console.log('Generate feedback here.');
+
+        const { success, feedbackId: id } = await createFeedback({
+            interviewId: interviewId!,
+            userId: userId!,
+            transcript: messages
+        })
+
+        if(success && id) {
+            router.push(`/interview/${interviewId}/feedback`);
+        } else {
+            console.log('Error saving feedback');
+            router.push('/');
+        }
+    }
+
     useEffect(() => {
-        if(callStatus === CallStatus.FINISHED) router.push('/');
+        if(callStatus === CallStatus.FINISHED) {
+            if(type === 'generate') {
+                router.push('/')
+            } else {
+                handleGenerateFeedback(messages);
+            }
+        }
     }, [messages, callStatus, type, userId]);
 
     const handleCall = async () => {
-        if (!vapi) {
-            console.error('VAPI instance not initialized');
-            toast.error('AI service is not properly configured. Please check your environment variables.');
-            return;
-        }
+        setCallStatus(CallStatus.CONNECTING);
 
-        if (!process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID) {
-            console.error('VAPI workflow ID not set');
-            toast.error('AI service is not properly configured. Please check your environment variables.');
-            return;
-        }
-
-        try {
-            setCallStatus(CallStatus.CONNECTING);
-            const call = await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID, {
+        if(type ==='generate') {
+            await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!, {
                 variableValues: {
-                    userId: userId,
-                    userName: userName,
-                },
-            });
-            setCallStatus(CallStatus.ACTIVE);
-        } catch (error) {
-            console.error('Error starting call:', error);
-            toast.error('Failed to start AI call. Please try again.');
-            setCallStatus(CallStatus.INACTIVE);
+                    username: userName,
+                    userid: userId,
+                }
+            })
+        } else {
+            let formattedQuestions = '';
+
+            if(questions) {
+                formattedQuestions = questions
+                    .map((question) => `- ${question}`)
+                    .join('\n');
+            }
+
+            await vapi.start(interviewer, {
+                variableValues: {
+                    questions: formattedQuestions
+                }
+            })
         }
     }
 
@@ -106,7 +128,7 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
         <div className="call-view">
             <div className="card-interviewer">
                 <div className="avatar">
-                    <Image src="/ai-avatar.png" alt="vapi" width={65} height={54} className="object-cover" />
+                    <Image src="/profile.png" alt="vapi" width={65} height={54} className="object-cover" />
                     {isSpeaking && <span className="animate-speak" />}
                 </div>
                 <h3>AI Interviewer</h3>
@@ -114,7 +136,7 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
 
             <div className="card-border">
                 <div className="card-content">
-                    <Image src="/user-avatar.png" alt="user avatar" width={540} height={540} className="rounded-full object-cover size-[120px]" />
+                    <Image src="/gamer.png" alt="user avatar" width={540} height={540} className="rounded-full object-cover size-[120px]" />
                     <h3>{userName}</h3>
                 </div>
             </div>
