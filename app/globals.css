@@ -303,8 +303,44 @@
     @apply flex flex-row blue-gradient-dark rounded-3xl px-16 py-6 items-center justify-between max-sm:px-4 transition-all duration-300 hover:shadow-xl;
   }
 
+  .card-interview {
+    @apply dark-gradient rounded-3xl min-h-full flex flex-col p-8 relative overflow-hidden gap-6 justify-between transition-all duration-300 hover:shadow-xl backdrop-blur-sm border border-primary-200/10;
+
+    .badge-text {
+      @apply text-sm font-semibold capitalize bg-primary-200/10 text-primary-200 px-3 py-1 rounded-full inline-block;
+    }
+
+    .interview-cover {
+      @apply w-full aspect-video rounded-xl overflow-hidden border-2 border-primary-200/20 transition-transform duration-300 hover:scale-[1.02];
+    }
+
+    .interview-info {
+      @apply flex flex-col gap-4;
+    }
+
+    .interview-title {
+      @apply text-xl font-bold text-light-100 tracking-tight;
+    }
+
+    .interview-meta {
+      @apply flex items-center justify-between text-sm;
+    }
+
+    .interview-date {
+      @apply text-light-400 flex items-center gap-2;
+    }
+
+    .interview-score {
+      @apply text-light-100 font-medium;
+    }
+
+    .interview-assessment {
+      @apply text-light-400 text-sm line-clamp-2;
+    }
+  }
+
   .interviews-section {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full;
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full;
   }
 
   .interview-text {
@@ -317,14 +353,6 @@
 
   .tech-tooltip {
     @apply absolute bottom-full mb-1 hidden group-hover:flex px-2 py-1 text-xs text-white bg-gray-700/90 rounded-md shadow-lg backdrop-blur-sm;
-  }
-
-  .card-interview {
-    @apply dark-gradient rounded-2xl min-h-full flex flex-col p-6 relative overflow-hidden gap-10 justify-between transition-all duration-300 hover:shadow-xl backdrop-blur-sm;
-
-    .badge-text {
-      @apply text-sm font-semibold capitalize;
-    }
   }
 }
 
